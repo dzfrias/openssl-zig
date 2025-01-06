@@ -1,0 +1,11 @@
+.{
+    .name = "openssl",
+    .version = "3.4.0",
+    .paths = .{""},
+    .dependencies = .{
+        .openssl = .{
+            .url = "https://github.com/openssl/openssl/releases/download/openssl-3.4.0/openssl-3.4.0.tar.gz",
+            .hash = "1220d3f1b030c3b71b8414a37e55b0003a49404b8d563e6e3110ee5f185df4fc6969",
+        },
+    },
+}
