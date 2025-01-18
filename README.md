@@ -2,12 +2,11 @@
 
 `openssl-zig` is a Zig package for a compilation of
 [OpenSSL](https://github.com/openssl/openssl) version 3.4.0 using Zig 0.13.0.
-While there are other packages with a similar goal, I had trouble integrating
-them into my own project, and even when I looked at the source code for their
-build files, I didn't have a clue as to how to fix my issues. For this package,
-I made it an effort to include _no_ quirks, weird workarounds, or compromises.
 
-This is a **definitive, clean, and working** compilation of OpenSSL using Zig.
+While there are other packages that aim to do the same thing, my goal for this
+project was to build OpenSSL is the cleanest way possible, without workarounds
+or anything of that sort. Thus, I spent a long time studying OpenSSL's original
+build method with the goal of recreating it as _closely as possible_ using Zig.
 
 ## Caveats
 
