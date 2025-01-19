@@ -54,4 +54,7 @@ perl "-I." "-Iproviders/common/der" "-Mconfigdata" "-Mconfigdata" "-Moids_to_c" 
 perl "-I." "-Iproviders/common/der" "-Mconfigdata" "-Mconfigdata" "-Moids_to_c" "util/dofile.pl" "-oMakefile" providers/common/der/der_ecx_gen.c.in > providers/common/der/der_ecx_gen.c
 perl "-I." "-Iproviders/common/der" "-Mconfigdata" "-Mconfigdata" "-Moids_to_c" "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_ecx.h.in > providers/common/include/prov/der_ecx.h
 
+platform="$(grep PLATFORM= < Makefile)"
+perl util/mkbuildinf.pl "TODO" "$platform" > crypto/buildinf.h
+
 echo Files were successfully generated

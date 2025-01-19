@@ -7,6 +7,7 @@ pub fn build(b: *std.Build) void {
     // This dependency is openssl release archive.
     const upstream = b.dependency("openssl", .{});
     const configure = std.Build.Step.Run.create(b, "Configure the openssl build");
+    configure.has_side_effects = true;
     configure.expectExitCode(0);
     // The Configure script will ouput this (hopefully)
     configure.addCheck(.{ .expect_stdout_match = "OpenSSL has been successfully configured" });
@@ -24,13 +25,13 @@ pub fn build(b: *std.Build) void {
         "no-tests",
     });
     const generate = std.Build.Step.Run.create(b, "Generate openssl files");
+    generate.has_side_effects = true;
     generate.expectExitCode(0);
     generate.addCheck(.{ .expect_stdout_match = "Files were successfully generated\n" });
     generate.setCwd(upstream.path(""));
     generate.addArg("sh");
     generate.addFileArg(b.path("generate.sh"));
     generate.step.dependOn(&configure.step);
-    b.getInstallStep().dependOn(&generate.step);
 
     const crypto = libcrypto(b, target, optimize);
     crypto.step.dependOn(&generate.step);
