@@ -6,24 +6,6 @@ pub fn build(b: *std.Build) void {
 
     // This dependency is openssl release archive.
     const upstream = b.dependency("openssl", .{});
-    const configure = std.Build.Step.Run.create(b, "Configure the openssl build");
-    configure.has_side_effects = true;
-    configure.expectExitCode(0);
-    // The Configure script will ouput this (hopefully)
-    configure.addCheck(.{ .expect_stdout_match = "OpenSSL has been successfully configured" });
-    configure.setCwd(upstream.path(""));
-    configure.addArg("perl");
-    configure.addFileArg(upstream.path("Configure"));
-    // These are our main openssl compilation options. We don't want to build
-    // executables like `openssl`; we don't want assembler code; and we don't
-    // want to build tests.
-    //
-    // Perhaps this parameter can be added to in the future.
-    configure.addArgs(&.{
-        "no-apps",
-        "no-asm",
-        "no-tests",
-    });
     const generate = std.Build.Step.Run.create(b, "Generate openssl files");
     generate.has_side_effects = true;
     generate.expectExitCode(0);
@@ -31,7 +13,6 @@ pub fn build(b: *std.Build) void {
     generate.setCwd(upstream.path(""));
     generate.addArg("sh");
     generate.addFileArg(b.path("generate.sh"));
-    generate.step.dependOn(&configure.step);
 
     const crypto = libcrypto(b, target, optimize);
     crypto.step.dependOn(&generate.step);
