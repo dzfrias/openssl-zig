@@ -18,6 +18,46 @@ lines of code.
 Also, while this package has only been tested on macOS, but it is _expected_ to
 work on other platforms. Make sure to submit an issue if that is not the case!
 
+## Usage
+
+Add this to your `build.zig.zon`:
+
+```zig
+.dependencies = .{
+    .string = .{
+        .url = "https://github.com/dzfrias/openssl-zig/archive/refs/heads/main.tar.gz",
+        // The correct hash will be suggested after a compilation attempt
+    }
+}
+```
+
+Then, modify your `build.zig` to contain the following:
+
+```zig
+const openssl = b.dependency("openssl", .{ .target = target, .optimize = optimize });
+exe.root_module.linkLibrary(openssl.artifact("ssl"));
+exe.root_module.linkLibrary(openssl.artifact("crypto"));
+```
+
+This will link `libssl.a` and `libcrypto.a`, and they will then be usable in
+source files using `@cImport`. For example:
+
+```zig
+const c = @cImport({
+    @cInclude("openssl/ssl.h");
+    @cInclude("openssl/err.h");
+});
+```
+
+Note that Zig will _not_ translate all functions correctly. For instance, if you
+try to use
+[`SSL_library_init()`](https://docs.openssl.org/3.1/man3/SSL_library_init/), you
+will get a compilation error that can't be fixed by this package (it is a bug in
+the Zig compiler as of 0.14.0). Fortunately, for that specific case,
+`SSL_library_init` has been superseded by
+[`OPENSSL_init_ssl`](https://docs.openssl.org/master/man3/OPENSSL_init_ssl/),
+which does compile correctly.
+
 ## Future Versions
 
 In case this package ever becomes out of date or you wish to use an older
