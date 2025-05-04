@@ -26,8 +26,6 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(ssl);
 }
 
-const cflags = &.{"-std=c99"};
-
 /// Create the libssl.a static library.
 ///
 /// See HOW.md for the details on how the compilation parameters were selected.
@@ -45,7 +43,6 @@ fn libssl(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.builtin
     lib.addIncludePath(upstream.path("include"));
     lib.addCSourceFiles(.{
         .root = upstream.path(""),
-        .flags = cflags,
         .files = &.{
             "ssl/bio_ssl.c",
             "ssl/d1_lib.c",
@@ -165,7 +162,6 @@ fn libcrypto(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.buil
     lib.root_module.addCMacro("MODULESDIR", "\"/usr/local/lib/ossl-modules\"");
     lib.addCSourceFiles(.{
         .root = upstream.path(""),
-        .flags = cflags,
         .files = &.{
             "crypto/aes/aes_cbc.c",
             "crypto/aes/aes_cfb.c",
