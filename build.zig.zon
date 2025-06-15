@@ -1,5 +1,6 @@
 .{
-    .name = "openssl",
+    .name = .openssl,
+    .fingerprint = 0x773a47f13ea12963,
     .version = "3.4.0",
     .dependencies = .{
         .openssl = .{

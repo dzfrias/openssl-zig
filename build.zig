@@ -31,11 +31,16 @@ pub fn build(b: *std.Build) void {
 /// See HOW.md for the details on how the compilation parameters were selected.
 fn libssl(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.builtin.OptimizeMode) *std.Build.Step.Compile {
     const upstream = b.dependency("openssl", .{});
-    const lib = b.addStaticLibrary(.{
+    const lib = b.addLibrary(.{
         .name = "ssl",
-        .target = target,
-        .optimize = optimize,
+        .root_module = b.createModule(.{
+            .target = target,
+            .optimize = optimize,
+        }),
+        .linkage = .static,
     });
+    lib.bundle_ubsan_rt = true;
+    lib.bundle_compiler_rt = true;
     lib.pie = true;
     lib.root_module.strip = true;
     lib.linkLibC();
@@ -144,11 +149,16 @@ fn libssl(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.builtin
 /// See HOW.md for the details on how the compilation parameters were selected.
 fn libcrypto(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.builtin.OptimizeMode) *std.Build.Step.Compile {
     const upstream = b.dependency("openssl", .{});
-    const lib = b.addStaticLibrary(.{
+    const lib = b.addLibrary(.{
         .name = "crypto",
-        .target = target,
-        .optimize = optimize,
+        .root_module = b.createModule(.{
+            .target = target,
+            .optimize = optimize,
+        }),
+        .linkage = .static,
     });
+    lib.bundle_ubsan_rt = true;
+    lib.bundle_compiler_rt = true;
     lib.pie = true;
     lib.root_module.strip = true;
     lib.linkLibC();
