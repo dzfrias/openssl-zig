@@ -10,18 +10,19 @@ pub fn build(b: *std.Build) void {
     generate.has_side_effects = true;
     generate.expectExitCode(0);
     generate.addCheck(.{ .expect_stdout_match = "Files were successfully generated\n" });
-    generate.setCwd(upstream.path(""));
     generate.addArg("sh");
     generate.addFileArg(b.path("generate.sh"));
+    generate.addFileArg(upstream.path(""));
+    const header_path = generate.addOutputFileArg("include");
 
     const crypto = libcrypto(b, target, optimize);
     crypto.step.dependOn(&generate.step);
     const ssl = libssl(b, target, optimize);
     ssl.step.dependOn(&generate.step);
 
-    crypto.installHeadersDirectory(upstream.path("include/crypto"), "crypto", .{});
-    crypto.installHeadersDirectory(upstream.path("include/internal"), "internal", .{});
-    ssl.installHeadersDirectory(upstream.path("include/openssl"), "openssl", .{});
+    crypto.installHeadersDirectory(header_path.path(b, "crypto"), "crypto", .{});
+    crypto.installHeadersDirectory(header_path.path(b, "internal"), "internal", .{});
+    ssl.installHeadersDirectory(header_path.path(b, "openssl"), "openssl", .{});
     b.installArtifact(crypto);
     b.installArtifact(ssl);
 }

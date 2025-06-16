@@ -1,5 +1,14 @@
 #!/bin/sh
 
+upstream="$1"
+# Out directory for header files (openssl/ssl, openssl/crypto, openssl/internal)
+include_out="$2"
+
+old_wd=$(pwd)
+# Build commands should be relative to the upstream (cloned) OpenSSL release.
+# We will go back to $old_wd after building.
+cd "$upstream"
+
 # OpenSSL often uses perl to generate files at build time. This includes code
 # files. This script will invoke perl to generate said files.
 #
@@ -68,5 +77,9 @@ platform="$(grep PLATFORM= < Makefile)"
 # We should generate a buildinf.h upon every build, since it includes
 # meta-information related to the time of the build.
 perl util/mkbuildinf.pl "TODO" "$platform" > crypto/buildinf.h
+
+cd "$old_wd"
+# Copy all include directories into the output directory.
+cp -R "$upstream/include" "$include_out"
 
 echo Files were successfully generated
