@@ -24,7 +24,7 @@ Add this to your `build.zig.zon`:
 
 ```zig
 .dependencies = .{
-    .string = .{
+    .openssl = .{
         .url = "https://github.com/dzfrias/openssl-zig/archive/refs/heads/main.tar.gz",
         // The correct hash will be suggested after a compilation attempt
     }
@@ -75,5 +75,5 @@ The following two other packages gave me a good starting point for this project:
 
 ## License
 
-This package is licensed under the [MIT license](./LICENSE). Note that OpenSSL
-project itself has an Apache 2.0 license.
+This package is licensed under the [MIT license](./LICENSE). Note that the
+OpenSSL project itself has an Apache 2.0 license.
