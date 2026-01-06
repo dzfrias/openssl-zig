@@ -1,11 +1,11 @@
 .{
     .name = .openssl,
     .fingerprint = 0x773a47f13ea12963,
-    .version = "3.4.0",
+    .version = "3.6.0",
     .dependencies = .{
         .openssl = .{
-            .url = "https://github.com/openssl/openssl/releases/download/openssl-3.4.0/openssl-3.4.0.tar.gz",
-            .hash = "N-V-__8AAJyD7QPT8bAww7cbhBSjflWwADpJQEuNVj5uMRDu",
+            .url = "https://github.com/openssl/openssl/releases/download/openssl-3.6.0/openssl-3.6.0.tar.gz",
+            .hash = "N-V-__8AAL0vEgg_3y6FkdXUTcg3WnimiykPSElV4Z2A3uhh",
         },
     },
     .paths = .{
