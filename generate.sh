@@ -141,6 +141,10 @@ if [ ! -e "include/openssl/ssl.h" ]; then
   perl "-I." "-Iutil/perl" "-Mconfigdata" "-MOpenSSL::paramnames" "util/dofile.pl" "-oMakefile" providers/implementations/keymgmt/ml_dsa_kmgmt.c.in > providers/implementations/keymgmt/ml_dsa_kmgmt.c
   perl "-I." "-Iutil/perl" "-Mconfigdata" "-MOpenSSL::paramnames" "util/dofile.pl" "-oMakefile" providers/implementations/keymgmt/ml_kem_kmgmt.c.in > providers/implementations/keymgmt/ml_kem_kmgmt.c
   perl "-I." "-Iutil/perl" "-Mconfigdata" "-MOpenSSL::paramnames" "util/dofile.pl" "-oMakefile" providers/implementations/keymgmt/slh_dsa_kmgmt.c.in > providers/implementations/keymgmt/slh_dsa_kmgmt.c
+  perl "-I." "-Iutil/perl" "-Mconfigdata" "-MOpenSSL::paramnames" "util/dofile.pl" "-oMakefile" providers/implementations/keymgmt/mlx_kmgmt.c.in > providers/implementations/keymgmt/mlx_kmgmt.c
+
+  # Generate provides/implementations/skeymgmt source files
+  perl "-I." "-Iutil/perl" "-Mconfigdata" "-MOpenSSL::paramnames" "util/dofile.pl" "-oMakefile" providers/implementations/skeymgmt/generic.c.in > providers/implementations/skeymgmt/generic.c
 
   # Generate providers/implementations/macs source files
   perl "-I." "-Iutil/perl" "-Mconfigdata" "-MOpenSSL::paramnames" "util/dofile.pl" "-oMakefile" providers/implementations/macs/cmac_prov.c.in > providers/implementations/macs/cmac_prov.c
