@@ -44,9 +44,9 @@ fn libssl(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.builtin
     lib.bundle_compiler_rt = true;
     lib.pie = true;
     lib.root_module.strip = true;
-    lib.linkLibC();
-    lib.addIncludePath(upstream.path("."));
-    lib.addIncludePath(upstream.path("include"));
+    lib.root_module.link_libc = true;
+    lib.root_module.addIncludePath(upstream.path("."));
+    lib.root_module.addIncludePath(upstream.path("include"));
 
     // Disable CommonCrypto random when cross-compiling TO macOS FROM non-macOS
     // because CommonCrypto headers not available when cross-compiling
@@ -54,7 +54,7 @@ fn libssl(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.builtin
         lib.root_module.addCMacro("OPENSSL_NO_APPLE_CRYPTO_RANDOM", "1");
     }
 
-    lib.addCSourceFiles(.{
+    lib.root_module.addCSourceFiles(.{
         .root = upstream.path(""),
         .files = &.{
             "ssl/bio_ssl.c",
@@ -173,12 +173,12 @@ fn libcrypto(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.buil
     lib.bundle_compiler_rt = true;
     lib.pie = true;
     lib.root_module.strip = true;
-    lib.linkLibC();
-    lib.addIncludePath(upstream.path("include"));
-    lib.addIncludePath(upstream.path("."));
-    lib.addIncludePath(upstream.path("providers/common/include"));
-    lib.addIncludePath(upstream.path("providers/implementations/include"));
-    lib.addIncludePath(upstream.path("providers/fips/include"));
+    lib.root_module.link_libc = true;
+    lib.root_module.addIncludePath(upstream.path("include"));
+    lib.root_module.addIncludePath(upstream.path("."));
+    lib.root_module.addIncludePath(upstream.path("providers/common/include"));
+    lib.root_module.addIncludePath(upstream.path("providers/implementations/include"));
+    lib.root_module.addIncludePath(upstream.path("providers/fips/include"));
     lib.root_module.addCMacro("OPENSSLDIR", "\"/usr/local/ssl\"");
     lib.root_module.addCMacro("ENGINESDIR", "\"/usr/local/lib/engines-3\"");
     lib.root_module.addCMacro("MODULESDIR", "\"/usr/local/lib/ossl-modules\"");
@@ -189,7 +189,7 @@ fn libcrypto(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.buil
         lib.root_module.addCMacro("OPENSSL_NO_APPLE_CRYPTO_RANDOM", "1");
     }
 
-    lib.addCSourceFiles(.{
+    lib.root_module.addCSourceFiles(.{
         .root = upstream.path(""),
         .files = &.{
             "crypto/aes/aes_cbc.c",
